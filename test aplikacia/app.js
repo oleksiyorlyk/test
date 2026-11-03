@@ -2,7 +2,36 @@ const U="yourtask.users",S="yourtask.session",TP="yourtask.tasks.";const $=id=>d
 function users(){try{return JSON.parse(localStorage.getItem(U))||[]}catch{return[]}}function saveUsers(v){localStorage.setItem(U,JSON.stringify(v))}function norm(v){return v.trim().toLowerCase()}function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}function strong(v){return v.length>=6&&/\d/.test(v)&&/[^A-Za-z0-9]/.test(v)}
 $("registerTab").onclick=()=>showAuth("register");$("loginTab").onclick=()=>showAuth("login");$("registerPassword").oninput=()=>{let v=$("registerPassword").value;[["rLen",v.length>=6],["rNum",/\d/.test(v)],["rSym",/[^A-Za-z0-9]/.test(v)]].forEach(([id,ok])=>$(id).classList.toggle("ok",ok))};
 $("registerForm").onsubmit=e=>{e.preventDefault();clearReg();let name=$("registerName").value.trim(),email=norm($("registerEmail").value),pw=$("registerPassword").value,cp=$("confirmPassword").value,bad=false;if(!name){$("registerNameError").textContent="Name is required.";bad=true}else if(name.length<2){$("registerNameError").textContent="Name must contain at least 2 characters.";bad=true}if(!email){$("registerEmailError").textContent="Email is required.";bad=true}else if(!validEmail(email)){$("registerEmailError").textContent="Enter a valid email address.";bad=true}if(!pw){$("registerPasswordError").textContent="Password is required.";bad=true}else if(!strong(pw)){$("registerPasswordError").textContent="Password does not meet all required rules.";bad=true}if(!cp){$("confirmPasswordError").textContent="Please confirm your password.";bad=true}else if(cp!==pw){$("confirmPasswordError").textContent="Passwords do not match.";bad=true}if(!$("termsCheckbox").checked){$("termsError").textContent="You must accept the Terms of Use and Privacy Policy.";bad=true}if(bad)return;let us=users();if(us.some(x=>x.email===email)){$("registerGlobalError").textContent="An account with this email already exists.";return}let user={id:crypto.randomUUID(),name,email,password:pw};us.push(user);saveUsers(us);sessionStorage.setItem(S,email);enter(user);toast("Account created")};
-$("loginForm").onsubmit=e=>{e.preventDefault();clearLogin();let email=norm($("loginEmail").value),pw=$("loginPassword").value,bad=false;if(!email){$("loginEmailError").textContent="Email is required.";bad=true}else if(!validEmail(email)){$("loginEmailError").textContent="Enter a valid email address.";bad=true}if(!pw){$("loginPasswordError").textContent="Password is required.";bad=true}if(bad)return;let u=users().find(x=>x.email===email&&x.password===pw);if(!u){$("loginGlobalError").textContent="Incorrect email or password.";return}sessionStorage.setItem(S,email);enter(u);toast("Signed in")};
+$("loginForm").onsubmit=e=>{
+  e.preventDefault();
+  clearLogin();
+  let email=norm($("loginEmail").value), pw=$("loginPassword").value, bad=false;
+
+  if(!email){
+    // Both empty: deliberately retain the old message for TC-005 demo.
+    $("loginEmailError").textContent = !pw ? "Email is required." : "This field is required";
+    bad=true;
+  } else if(!validEmail(email)){
+    $("loginEmailError").textContent="Enter a valid email address.";
+    bad=true;
+  }
+
+  if(!pw){
+    // Both empty: deliberately retain the old message for TC-005 demo.
+    $("loginPasswordError").textContent = !email ? "Password is required." : "This field is required";
+    bad=true;
+  }
+
+  if(bad)return;
+  let u=users().find(x=>x.email===email&&x.password===pw);
+  if(!u){
+    $("loginGlobalError").textContent="Invalid email or password";
+    return;
+  }
+  sessionStorage.setItem(S,email);
+  enter(u);
+  toast("Signed in");
+};
 $("logoutButton").onclick=()=>{sessionStorage.removeItem(S);currentUser=null;tasks=[];showAuth("login");toast("Signed out")};
 function showAuth(mode){$("workspacePage").classList.add("hidden");$("authPage").classList.remove("hidden");let r=mode==="register";$("registerView").classList.toggle("hidden",!r);$("loginView").classList.toggle("hidden",r);$("registerTab").classList.toggle("active",r);$("loginTab").classList.toggle("active",!r);clearReg();clearLogin()}function clearReg(){["registerNameError","registerEmailError","registerPasswordError","confirmPasswordError","termsError","registerGlobalError"].forEach(id=>$(id).textContent="")}function clearLogin(){["loginEmailError","loginPasswordError","loginGlobalError"].forEach(id=>$(id).textContent="")}
 function enter(u){currentUser=u;$("authPage").classList.add("hidden");$("workspacePage").classList.remove("hidden");tasks=loadTasks(u.email);refreshUser();render()}function refreshUser(){$("sidebarUserName").textContent=currentUser.name;$("sidebarUserEmail").textContent=currentUser.email;$("greetingTitle").textContent=`Hello, ${currentUser.name.split(" ")[0]}`}
