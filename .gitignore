@@ -4,3 +4,7 @@ test-results/
 .DS_Store
 .env
 .vscode/
+.venv/
+__pycache__/
+.pytest_cache/
+data/
