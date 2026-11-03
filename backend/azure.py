@@ -1,4 +1,3 @@
-
 """Step 1 — retrieve User Stories from Azure DevOps; no text cleanup here."""
 
 from urllib.parse import quote

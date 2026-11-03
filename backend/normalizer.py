@@ -1,4 +1,3 @@
-
 """Step 2 — convert Azure DevOps HTML to LLM-readable, traceable requirements.
 
 This is deterministic parsing, not AI interpretation. It never invents missing
@@ -73,7 +72,7 @@ def parse_acceptance_criteria(text: str) -> tuple[list[dict], str, list[str]]:
 
         if match:
             label = match.group("label")
-            canonical_id = f"AC{int(re.search(r'\d+', label).group())}"
+            canonical_id = "AC" + str(int(re.search(r"\d+", label).group()))
 
             if canonical_id in seen:
                 warnings.append(

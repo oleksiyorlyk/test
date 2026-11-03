@@ -1,4 +1,3 @@
-
 """CLI entry point for steps 1–2: Azure fetch -> normalize -> save as JSON.
 
     python getus.py --id 1
@@ -15,8 +14,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from azure import AzureStoryError, fetch_story
-from normalizer import normalize_story
+from .azure import AzureStoryError, fetch_story
+from .normalizer import normalize_story
 
 ROOT = Path(__file__).resolve().parent
 
