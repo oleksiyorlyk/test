@@ -1,0 +1,65 @@
+{
+  "application": "YourTask",
+  "variant": "Web UI",
+  "base_url": "http://127.0.0.1:8000",
+  "framework": "Playwright",
+  "state": {
+    "users": "localStorage yourtask.users",
+    "tasks": "localStorage yourtask.tasks.<email>",
+    "session": "sessionStorage yourtask.session",
+    "reset": "tests/helpers/app-state.js"
+  },
+  "selectors": {
+    "register": {
+      "name": "register-name",
+      "email": "register-email",
+      "password": "register-password",
+      "confirm": "register-confirm-password",
+      "terms": "terms-checkbox",
+      "submit": "register-submit"
+    },
+    "login": {
+      "email": "login-email",
+      "password": "login-password",
+      "submit": "login-submit"
+    },
+    "task": {
+      "new": "new-task-button",
+      "title": "task-title",
+      "description": "task-description",
+      "priority": "task-priority",
+      "status": "task-status",
+      "category": "task-category",
+      "due": "task-due-date",
+      "important": "task-important",
+      "add_subtask": "add-subtask-button",
+      "save": "task-save-button",
+      "search": "task-search",
+      "priority_filter": "priority-filter",
+      "category_filter": "category-filter",
+      "sort": "sort-select"
+    },
+    "profile": {
+      "open": "edit-profile-button",
+      "name": "profile-name",
+      "save": "profile-save-button"
+    },
+    "filters": {
+      "all": "filter-all",
+      "todo": "filter-todo",
+      "inprogress": "filter-inprogress",
+      "done": "filter-done",
+      "important": "filter-important",
+      "overdue": "filter-overdue"
+    }
+  },
+  "dynamic_selectors": {
+    "task_row": "task-row-<taskId>",
+    "task_edit": "task-edit-<taskId>",
+    "task_delete": "task-delete-<taskId>",
+    "important_badge": "important-badge-<taskId>",
+    "overdue_badge": "overdue-badge-<taskId>",
+    "subtask_progress": "subtask-progress-<taskId>",
+    "subtask_toggle": "subtask-toggle-<taskId>-<index>"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "valid_user": {
+    "name": "Test User",
+    "email": "test.user@yourtask.local",
+    "password": "Test12!"
+  },
+  "valid_task": {
+    "title": "Prepare presentation",
+    "description": "Finish slides",
+    "priority": "high",
+    "status": "todo",
+    "category": "University",
+    "important": true
+  },
+  "categories": [
+    "University",
+    "Work",
+    "Personal",
+    "Other"
+  ]
+}
