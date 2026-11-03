@@ -6,9 +6,11 @@ const fixtures = require('../../test-data.json');
 test("TC-002 | Reject an incorrect password", async ({ page }) => {
   await resetAppState(page);
  await seedRegisteredUser(page, fixtures.valid_user);
+ await page.getByTestId('login-tab').click();
  await page.getByTestId('login-email').fill(fixtures.valid_user.email);
- await page.getByTestId('login-password').fill('incorrect-password');
+ await page.getByTestId('login-password').fill('Incorrect12!');
  await page.getByTestId('login-submit').click();
  await expect(page.getByTestId('login-global-error')).toHaveText('Invalid email or password');
  await expect(page.getByTestId('login-submit')).toBeVisible();
+ await expect(page.getByTestId('greeting-title')).toBeHidden();
 });
