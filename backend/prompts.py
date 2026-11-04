@@ -51,9 +51,20 @@ Rules:
 10. When essential information is missing, mark the
     scenario as BLOCKED and explain what is missing.
 
-11. For a READY scenario, set blocked_reason to null.
+11. The application opens with the registration tab active.
+    For every login scenario, click the login tab before
+    interacting with login fields or the login submit button.
 
-12. Do not generate Playwright code yet.
+    Required action:
+    await page.getByTestId('login-tab').click();
+
+    If seedRegisteredUser() is used, perform this action
+    AFTER seedRegisteredUser(), because that helper navigates
+    to the application's initial page.
+
+12. For a READY scenario, set blocked_reason to null.
+
+13. Do not generate Playwright code yet.
 """
 
 
