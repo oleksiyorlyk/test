@@ -1,10 +1,53 @@
+# Závislosti a virtuálne prostredia
 node_modules/
-playwright-report/
-test-results/
-.DS_Store
-.env
-.vscode/
 .venv/
+venv/
+
+# Cache Pythonu a nástrojov
 __pycache__/
+*.py[cod]
 .pytest_cache/
-data/
+.mypy_cache/
+.ruff_cache/
+.eslintcache
+.uv-cache/
+.cache/
+
+# Zostavenie frontend
+/frontend/dist/
+*.tsbuildinfo
+.vite/
+
+# Lokálne dáta a generované testy
+/backend/data/
+# Staré lokálne dáta počas migrácie
+/control_api/data/
+/runner/generated-tests/
+/test aplikacia/generated-tests/
+
+# Reporty testov a CI
+test-results/
+playwright-report/
+blob-report/
+coverage/
+htmlcov/
+.coverage
+.coverage.*
+/.ci-artifacts/
+
+# Kľúče, logy a lokálne nastavenia
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Dočasné súbory a zvyšky po zlúčení
+*.tmp
+*.orig
+*.rej
+*~

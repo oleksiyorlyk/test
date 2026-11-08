@@ -1,0 +1,46 @@
+{
+  "name": "ai-test-control",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "typecheck": "tsc -b",
+    "lint": "eslint src e2e",
+    "api:generate": "openapi-typescript ../contracts/openapi.json -o src/shared/api/generated.ts",
+    "api:check": "node scripts/check-api.mjs",
+    "format:check": "prettier --check src e2e scripts eslint.config.js vite.config.ts playwright.config.ts package.json tsconfig.json"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "^5.2.0",
+    "@fontsource/ibm-plex-sans": "^5.2.0",
+    "@tanstack/react-query": "^5.90.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.66.0",
+    "react-router-dom": "^7.9.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@testing-library/jest-dom": "^6.9.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "jsdom": "^27.0.0",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^7.2.0",
+    "vitest": "^3.2.0"
+  }
+}

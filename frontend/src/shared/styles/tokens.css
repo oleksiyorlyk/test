@@ -1,0 +1,17 @@
+:root {
+  --yellow: #ffcd11;
+  --ink: #171717;
+  --paper: #f4f4f1;
+  --white: #fff;
+  --line: #d9d9d4;
+  --muted: #6b6b65;
+  --green: #257544;
+  --red: #b83930;
+  --amber: #95640b;
+  font-family: "IBM Plex Sans", sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  font-size: 14px;
+  line-height: 1.55;
+}

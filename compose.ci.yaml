@@ -1,0 +1,17 @@
+# CI uses disposable named volumes because the DinD daemon has its own filesystem.
+# The production Compose configuration and localhost-only port stay unchanged.
+services:
+  backend:
+    volumes: !override
+      - ci-data:/app/backend/data
+      - ci-generated:/app/runner/generated-tests
+      - ci-results:/app/runner/test-results
+      - ci-reports:/app/runner/playwright-report
+  frontend:
+    ports: !reset []
+
+volumes:
+  ci-data:
+  ci-generated:
+  ci-results:
+  ci-reports:

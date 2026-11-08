@@ -1,0 +1,105 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - when: never
+
+stages:
+  - check
+  - smoke
+
+default:
+  tags:
+    - docker
+  interruptible: true
+  timeout: 30m
+
+variables:
+  UV_VERSION: "0.13.7"
+  UV_PYTHON_DOWNLOADS: "never"
+  RUN_WINDOWS_TESTS: "0"
+  WINDOWS_RUNNER_TAG: "windows"
+
+backend:
+  stage: check
+  rules:
+    - when: on_success
+  image: python:3.12-bookworm
+  before_script:
+    - python -m pip install --disable-pip-version-check "uv==$UV_VERSION"
+  script:
+    - uv sync --frozen
+    - uv lock --check
+    - uv run --frozen ruff check backend scripts
+    - uv run --frozen ruff format --check backend scripts
+    - uv run --frozen python -m unittest discover -s backend/tests -v
+    - uv run --frozen python scripts/check_repository.py
+    - uv run --frozen python -m backend.export_openapi --check
+    - uv run --frozen python scripts/check_requirements.py
+
+frontend:
+  stage: check
+  rules:
+    - when: on_success
+  image: node:24-bookworm
+  variables:
+    CI: "true"
+    PLAYWRIGHT_JUNIT_OUTPUT_FILE: "test-results/junit.xml"
+  script:
+    - cd frontend
+    - npm ci
+    - npm run api:check
+    - npm run lint -- --max-warnings=0
+    - npm run format:check
+    - npm run build
+    - npm test
+    - npx --no-install playwright install --with-deps chromium
+    - npm run test:e2e -- --reporter=line,junit
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - frontend/dist/
+      - frontend/test-results/
+    reports:
+      junit: frontend/test-results/junit.xml
+
+# Optional: enable only when the project has an appropriate Windows shell runner.
+backend_windows:
+  stage: check
+  tags:
+    - $WINDOWS_RUNNER_TAG
+  rules:
+    - if: '$RUN_WINDOWS_TESTS == "1"'
+    - when: never
+  script:
+    - uv sync --frozen --python 3.12
+    - uv run --frozen python -m unittest discover -s backend/tests -v
+
+# Requires a Linux Docker executor with privileged=true and /certs/client shared
+# between the job and service. See docs/ci.md; no project credentials are used.
+docker:
+  stage: smoke
+  rules:
+    - when: on_success
+  image: docker:29.7.2-cli
+  services:
+    - name: docker:29.7.2-dind
+      alias: docker
+      variables:
+        HEALTHCHECK_TCP_PORT: "2376"
+  variables:
+    DOCKER_HOST: "tcp://docker:2376"
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_CERT_PATH: "/certs/client"
+  script:
+    - sh scripts/ci/docker-smoke.sh
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - .ci-artifacts/

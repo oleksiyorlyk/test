@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+button,
+a {
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #956a00;
+  outline-offset: 3px;
+}
+input,
+textarea,
+select {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 3px;
+  color: var(--ink);
+  min-width: 0;
+}
+input,
+select {
+  height: 43px;
+  padding: 0 12px;
+}
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  resize: vertical;
+  line-height: 1.5;
+}
+select {
+  cursor: pointer;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+.brand,
+.metric > strong,
+.result-stat strong {
+  font-family: "Barlow Condensed", sans-serif;
+  line-height: 1.08;
+}
+h1 {
+  font-size: 44px;
+  font-weight: 600;
+}
+h2 {
+  font-size: 29px;
+  font-weight: 600;
+}
+h3 {
+  font-size: 23px;
+  font-weight: 600;
+}
+small {
+  font-size: 11px;
+}
+ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 12px;
+}
+label small {
+  font-weight: 400;
+  color: var(--muted);
+}
+[hidden] {
+  display: none !important;
+}

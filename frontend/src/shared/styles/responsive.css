@@ -1,0 +1,510 @@
+@media (min-width: 1500px) {
+  .hero {
+    padding-top: 55px;
+  }
+  .hero h1 {
+    font-size: 88px;
+  }
+  .hero-visual {
+    min-height: 350px;
+  }
+  .ring-outer {
+    width: 320px;
+    height: 320px;
+  }
+  .ring-inner {
+    width: 255px;
+    height: 255px;
+  }
+  .hero-copy {
+    padding-bottom: 50px;
+  }
+}
+@media (max-width: 1100px) {
+  .shell {
+    width: calc(100% - 48px);
+  }
+  .hero {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .hero h1 {
+    font-size: 64px;
+  }
+  .hero-search {
+    margin: 0 -30px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .diagram-tag {
+    font-size: 7px;
+    gap: 10px;
+  }
+  .tag-two {
+    right: -15px;
+  }
+  .ring-outer {
+    width: 235px;
+    height: 235px;
+  }
+  .ring-inner {
+    width: 190px;
+    height: 190px;
+  }
+  .diagram-core {
+    width: 85px;
+    height: 85px;
+  }
+  .metric {
+    padding: 18px;
+  }
+  .metric > p {
+    font-size: 8px;
+  }
+  .toolbar {
+    flex-wrap: wrap;
+  }
+  .toolbar .search-field {
+    flex-basis: 100%;
+  }
+  .editor-grid {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 17px;
+  }
+  .editor-actions {
+    flex-wrap: wrap;
+  }
+  .editor-actions > div:last-child {
+    margin-left: auto;
+  }
+  .scenario-card > summary {
+    gap: 8px;
+    padding: 14px;
+  }
+  .page-title h1 {
+    font-size: 37px;
+  }
+  .main-nav a {
+    padding: 0 17px;
+  }
+  .nav-right {
+    font-size: 8px;
+  }
+  .job-summary {
+    gap: 16px;
+  }
+  .diagnostic-status {
+    max-width: 100px;
+  }
+}
+@media (max-width: 760px) {
+  .shell {
+    width: calc(100% - 32px);
+  }
+  .utility-bar .shell > span:last-child {
+    display: none;
+  }
+  .header-main {
+    height: 79px;
+    gap: 12px;
+  }
+  .brand {
+    font-size: 28px;
+    gap: 9px;
+  }
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+  }
+  .brand small {
+    font-size: 7px;
+  }
+  .project-name {
+    display: none;
+  }
+  .connection-status {
+    font-size: 0;
+    margin-left: auto;
+    gap: 6px;
+  }
+  .connection-status > svg {
+    display: none;
+  }
+  .mobile-menu {
+    display: inline-flex !important;
+  }
+  .main-nav > .shell {
+    display: none;
+    height: auto;
+    flex-direction: column;
+  }
+  .main-nav.nav-open > .shell {
+    display: flex;
+  }
+  .main-nav a,
+  .main-nav a:first-child {
+    min-height: 43px;
+    padding: 0 9px;
+    margin: 0;
+    border: 0;
+  }
+  .main-nav a.active {
+    background: #fff5ce;
+  }
+  .nav-right {
+    display: none;
+  }
+  .main-content {
+    padding-top: 22px;
+    padding-bottom: 38px;
+  }
+  .hero {
+    padding: 29px 25px 0;
+    grid-template-columns: 1fr 0.8fr;
+  }
+  .hero h1 {
+    font-size: 57px;
+  }
+  .hero .eyebrow {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .hero-description {
+    font-size: 11px;
+  }
+  .hero-visual {
+    min-height: 250px;
+    position: absolute;
+    width: 210px;
+    right: -28px;
+    top: 45px;
+    opacity: 0.35;
+    z-index: -1;
+  }
+  .hero-copy {
+    grid-column: 1/-1;
+    padding-bottom: 28px;
+  }
+  .hero-search {
+    margin: 0 -25px;
+    padding: 15px 25px;
+    display: block;
+  }
+  .hero-search label {
+    margin-bottom: 9px;
+    font-size: 8px;
+  }
+  .hero-search input {
+    font-size: 11px;
+    width: 100%;
+    max-width: none;
+  }
+  .hero-search .button {
+    font-size: 10px;
+    min-height: 42px;
+  }
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 16px;
+  }
+  .metric {
+    padding: 17px 20px;
+  }
+  .metric:nth-child(2) {
+    border-right: 0;
+  }
+  .metric:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+  .metric > strong {
+    font-size: 43px;
+  }
+  .metric > p {
+    font-size: 8px;
+  }
+  .section-heading {
+    margin-top: 25px;
+  }
+  .section-heading h2 {
+    font-size: 27px;
+  }
+  .section-heading .text-button {
+    font-size: 10px;
+  }
+  .workflow-strip {
+    gap: 15px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .workflow-strip > div {
+    padding-left: 42px;
+  }
+  .workflow-strip > svg {
+    display: none;
+  }
+  .workflow-strip > div + div {
+    margin-top: 10px;
+  }
+  footer .shell {
+    flex-direction: column;
+    gap: 9px;
+  }
+  footer {
+    font-size: 8px;
+  }
+  .page-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 17px;
+    margin-bottom: 20px;
+  }
+  .page-title h1 {
+    font-size: 36px;
+  }
+  .page-title .open-story {
+    width: 100%;
+  }
+  .page-title > .external {
+    align-self: flex-start;
+  }
+  .toolbar {
+    padding: 16px;
+    gap: 12px;
+  }
+  .toolbar .filter-label {
+    flex: 1;
+    min-width: 100px;
+  }
+  .toolbar .filter-label select {
+    width: 100%;
+    min-width: 0;
+  }
+  .toolbar .search-field {
+    max-width: 100%;
+  }
+  .search-field input {
+    font-size: 11px;
+  }
+  .toolbar .search-field .button {
+    padding: 8px;
+  }
+  .page-note {
+    align-items: flex-start;
+    font-size: 10px;
+  }
+  .page-note svg {
+    flex-shrink: 0;
+  }
+  th {
+    padding: 11px 15px;
+  }
+  td {
+    padding: 15px;
+    font-size: 11px;
+  }
+  .table-link {
+    max-width: 280px;
+  }
+  .requirements-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .prose {
+    padding: 22px;
+  }
+  .detail-tabs {
+    gap: 24px;
+  }
+  .detail-tabs a {
+    font-size: 11px;
+  }
+  .review-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 13px;
+  }
+  .review-meta > div {
+    flex-wrap: wrap;
+    font-size: 10px;
+  }
+  .editor-grid {
+    grid-template-columns: 1fr;
+  }
+  .criteria-panel {
+    position: static;
+  }
+  .criteria-panel h3 {
+    margin-bottom: 13px;
+  }
+  .criterion-button p {
+    max-height: 100px;
+    overflow: auto;
+  }
+  .scenario-filters {
+    flex-wrap: wrap;
+  }
+  .scenario-filters > .search-field {
+    flex-basis: 100%;
+  }
+  .scenario-filters > select {
+    flex: 1;
+    max-width: none;
+  }
+  .scenario-card > summary {
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .scenario-name {
+    min-width: 120px;
+  }
+  .scenario-card > summary:after {
+    display: none;
+  }
+  .scenario-card > summary > .badge {
+    margin-left: auto;
+  }
+  .scenario-body {
+    padding: 16px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .span-two {
+    grid-column: 1;
+  }
+  .editor-actions {
+    padding: 12px;
+    margin-left: -5px;
+    margin-right: -5px;
+    gap: 10px;
+  }
+  .editor-actions > div:last-child {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+  .editor-actions .button-primary {
+    grid-column: 1/-1;
+  }
+  .editor-actions .button {
+    font-size: 10px;
+    padding: 9px 8px;
+  }
+  .connection-overview {
+    flex-wrap: wrap;
+    gap: 23px;
+    padding: 23px;
+  }
+  .connection-overview > div {
+    min-width: 120px;
+  }
+  .mode-label {
+    margin-left: 0;
+  }
+  .diagnostic {
+    padding: 17px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .diagnostic > div {
+    flex: 1;
+    min-width: 170px;
+  }
+  .diagnostic-status {
+    max-width: none;
+    width: 100%;
+    margin-left: 54px;
+    text-align: left;
+    font-size: 8px;
+  }
+  .diagnostic h3 {
+    font-size: 22px;
+  }
+  .job-summary {
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+  .job-symbol {
+    width: 48px;
+    height: 48px;
+  }
+  .job-summary > div:nth-child(2) {
+    flex: 1;
+    min-width: 170px;
+  }
+  .job-summary h2 {
+    font-size: 26px;
+  }
+  .job-summary > .badge {
+    margin-left: 64px;
+  }
+  .panel-heading {
+    padding: 18px;
+  }
+  .panel-heading h2 {
+    font-size: 25px;
+  }
+  .result-stat {
+    padding: 16px 12px;
+  }
+  .result-stat > strong {
+    font-size: 35px;
+  }
+  .result-stat > span {
+    font-size: 9px;
+  }
+  .artifact-list > li {
+    padding: 15px;
+    gap: 10px;
+  }
+  .artifact-list strong {
+    font-size: 11px;
+  }
+  .running-banner > .shell {
+    padding: 8px 0;
+    flex-wrap: wrap;
+    font-size: 10px;
+    gap: 5px;
+  }
+  .running-banner > .shell > span {
+    width: 100%;
+    margin-left: 21px;
+    font-size: 9px;
+  }
+  .confirm-dialog {
+    padding: 23px;
+  }
+  .alert {
+    padding: 15px;
+    font-size: 11px;
+  }
+  .pagination {
+    font-size: 10px;
+    padding: 15px;
+  }
+  .empty {
+    padding: 35px 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.artifact-list > li > div:last-child {
+  flex: 0 0 auto;
+  max-width: 45%;
+}
+.artifact-list > li > div:last-child p {
+  font-size: 10px;
+  max-width: 180px;
+  margin-top: 6px;
+}

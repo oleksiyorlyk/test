@@ -1,67 +1,111 @@
-# AI Test Automation Generator
+# TESTFORGE — AI Test Automation Generator
 
-## O projekte
+Lokálna aplikácia na prevod Azure DevOps User Stories na testovacie scenáre
+a Playwright testy. Používateľ návrh skontroluje, upraví a výslovne schváli.
+Backend potom vykoná testy a publikuje Test Cases, kód a reporty do Azure.
 
-Nástroj má testerovi pomôcť previesť User Stories z Azure DevOps na testovacie
-scenáre a spustiteľné automatizované testy webového UI pomocou LLM a Playwright.
-Cieľom je sledovať väzbu medzi požiadavkou, scenárom, testom a výsledkom.
-Podrobné zadanie je v [dokumentácii projektu](<AI Automation test generator - Dokumentácia.docx>).
+## Štruktúra
 
-## Workflow
+| Priečinok | Obsah |
+| --- | --- |
+| `backend/` | Python API, Azure/OpenAI, generovanie, operácie a úložisko |
+| `frontend/` | Riadiace rozhranie React/TypeScript |
+| `runner/` | Playwright, testovacie dáta, generované testy a reporty |
+| `target-app/` | YourTask, testovaná aplikácia HTML/CSS/JavaScript |
+| `contracts/` | OpenAPI schéma pre spoločné typy API |
+| `scripts/` | Kontroly repozitára, závislostí a CI |
+| `docs/` | Príručka CI a pôvodné zadanie projektu |
 
-Nasledujúci postup opisuje cieľové riešenie, ktoré ešte nie je celé implementované.
+Prehliadač → frontend/Nginx → backend/FastAPI → Azure, OpenAI a Playwright.
+Runner aj YourTask sú v backend kontajneri; Compose má presne dve služby.
 
-1. Tester vytvorí User Story v Azure DevOps projekte s procesom Agile:
-   uvedie názov, opis a akceptačné kritériá.
-2. Python backend cez Azure DevOps API načíta všetky User Stories z nastaveného
-   boardu. Samostatné riadiace webové UI zobrazí zoznam; tester otvorí konkrétnu
-   story a systém ju ďalej spracuje podľa jej ID.
-3. Tlačidlom **Generovať scenáre** tester spustí generovanie cez LLM API.
-   Každý scenár obsahuje ID, názov, väzbu na akceptačné kritérium, predpoklady,
-   testovacie dáta, kroky a očakávaný výsledok.
-4. Tester skontroluje celý súbor scenárov a schváli ho alebo požiada
-   o opätovné generovanie. Kód testov vznikne až po schválení scenárov.
-5. Schválené scenáre sa uložia ako work items prepojené s pôvodnou User Story.
-6. Tlačidlo **Spustiť testy** spustí generovanie Playwright kódu zo schválených
-   scenárov a následné vykonanie testov nad samostatnou aplikáciou YourTask.
-   Vygenerovaný kód sa uloží ako prílohy k User Story.
-7. Backend uloží výsledky a vráti ich do riadiaceho UI: prehľad testov a prístup
-   k HTML reportu. JSON výstup slúži na automatické spracovanie výsledkov.
+## Spustenie cez Docker
 
-Scenáre majú pokrývať úspešný priebeh aj relevantné negatívne a hraničné prípady.
-LLM nesmie vymýšľať požiadavky ani selektory; chýbajúce podklady označí ako
-`BLOCKED`. Každý test musí konkrétnou kontrolou overovať očakávané správanie.
-Testovú logiku generuje AI, nesmie byť vopred naprogramovaná podľa ID stories.
-Pri rovnakých východiskových dátach musia byť testy opakovateľné.
-Výsledky rozlišujú `PASS`, `FAIL`, chybu generovania alebo spustenia a `BLOCKED`.
-Samotný `FAIL` nie je automaticky potvrdenou chybou aplikácie.
-Pri neexistujúcej story, chýbajúcich údajoch alebo chybe prístupu UI zobrazí
-zrozumiteľnú správu.
+Potrebujete Docker Desktop s Linux kontajnermi alebo Docker Engine s Compose.
+Všetky príkazy spúšťajte z koreňa repozitára.
 
-## Technológie a výstupy
+1. Ak `backend/.env` neexistuje, skopírujte `backend/.env.example` ako `.env`
+   v tom istom priečinku. Existujúci súbor neprepisujte.
+2. Vyplňte organizáciu a projekt Azure, PAT, OpenAI kľúč a dostupný model.
+   Azure projekt musí podporovať User Story a Test Case; PAT potrebuje
+   čítanie a zápis work items. Kľúče sa neposielajú do frontend ani do Git.
+3. Spustite:
 
-- **Azure DevOps**: zdroj požiadaviek a miesto prepojenia scenárov a kódu s User Story.
-- **Python backend**: komunikácia s Azure DevOps a LLM API, ukladanie výstupov
-  a riadenie generovania aj spúšťania testov.
-- **LLM API**: generovanie štruktúrovaných scenárov v JSON a Playwright kódu
-  s využitím údajov o aplikácii, jej URL, selektorov a testovacích dát.
-- **Playwright (JavaScript/Node.js)**: vykonanie testov; HTML report v
-  `playwright-report/` a JSON výsledky v `test-results/results.json`.
-- **Riadiace UI**: plánované rozhranie pre stories, schvaľovanie, spúšťanie a výsledky.
-- **YourTask**: existujúca testovaná aplikácia na registráciu, prihlásenie a správu úloh.
-
-## Aktuálny stav a spustenie
-
-Repozitár obsahuje YourTask, skript [getus.py](getus.py) na načítanie jednej
-User Story s pevným ID a konfiguráciu Playwright pre priečinok `generated-tests/`.
-Riadiace UI, načítanie zoznamu stories, AI generovanie, ukladanie výstupov do Azure
-a návrat výsledkov do UI ešte vyžadujú implementáciu. Vygenerované testy zatiaľ chýbajú.
-
-Na lokálne spustenie aplikácie YourTask je potrebný Node.js s npm:
-
-```sh
-npm install
-npm run dev
+```powershell
+docker compose up --build -d
 ```
 
-Aplikácia bude dostupná na http://127.0.0.1:8000.
+- Rozhranie: **http://localhost:8080**
+- API dokumentácia: http://localhost:8080/docs
+- Diagnostika: http://localhost:8080/api/health
+
+```powershell
+docker compose ps
+docker compose logs -f backend
+docker compose down
+```
+
+Pred zastavením počkajte na dokončenie operácie. Dáta zostávajú na disku
+aj po zastavení alebo opätovnom zostavení kontajnerov.
+
+## Používanie
+
+1. V **Pripojenie** skontrolujte konfiguráciu a nástroje. Táto kontrola
+   overuje ich prítomnosť, nie platnosť kľúčov.
+2. Vyberte Story; požiadavky musia obsahovať jednoznačné kritériá AC1, AC2…
+3. Spustite **Generovať scenáre** a skontrolujte návrh.
+4. Upravte scenáre a zvoľte **Uložiť zmeny**.
+5. **Schváliť a spustiť** vykoná testy aj publikovanie.
+6. V histórii otvorte výsledky, denník a artefakty.
+
+`SUCCEEDED` označuje dokončený pracovný postup, nie úspech všetkých testov.
+Scenáre `BLOCKED` sa nevykonávajú. Pri čiastočnej publikácii skontrolujte
+manifest a Azure pred opakovaním; dokončené vzdialené zápisy sa nevracajú späť.
+
+## Lokálny vývoj
+
+Potrebujete Python 3.12–3.14, uv 0.13.7 a Node.js 24. PowerShell:
+
+```powershell
+uv sync --frozen
+npm.cmd --prefix frontend ci
+npm.cmd --prefix runner ci
+Push-Location runner
+npx.cmd playwright install chromium
+Pop-Location
+```
+
+V samostatných termináloch:
+
+```powershell
+uv run --frozen python -m uvicorn backend.api:app --host 127.0.0.1 --port 8001
+npm.cmd --prefix frontend run dev
+```
+
+Otvorte http://127.0.0.1:5173; Vite presmeruje `/api` na backend. Po zostavení
+frontend a reštarte API možno používať aj http://127.0.0.1:8001.
+Na Linux/macOS použite `npm` a `npx` bez `.cmd`.
+
+## Dáta a overenie
+
+História, scenáre a archív sú v `backend/data/`; pracovné testy a reporty
+v `runner/`. Závislosti, dáta, zostavenie, reporty a `.env` sa necommitujú.
+Zdrojové súbory, automatické testy, konfigurácie, schéma a lock-súbory zostávajú v Git.
+
+Nespúšťajte lokálny a Docker backend súčasne nad rovnakými dátami. Aplikácia
+je určená pre jedného lokálneho používateľa a jednu aktívnu operáciu.
+
+```powershell
+uv run --frozen python -m unittest discover -s backend/tests -v
+uv run --frozen python scripts/check_repository.py
+npm.cmd --prefix frontend test
+npm.cmd --prefix frontend run build
+```
+
+GitLab pipeline sa spúšťa po push, pri merge requeste alebo ručne.
+Používa runner s tagom `docker`; Docker job vyžaduje privileged DinD a TLS.
+CI používa náhrady Azure/OpenAI a aplikáciu nenasadzuje.
+
+Podrobnosti: [backend](backend/README_BACKEND.md), [frontend](frontend/README.md),
+[runner](runner/README.md), [GitLab CI](docs/ci.md).
+Pôvodné zadanie: [dokument projektu](docs/project-specification.docx).

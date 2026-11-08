@@ -1,0 +1,207 @@
+.review-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  background: #ededdf;
+  border: 1px solid #dcdccc;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  padding: 15px 20px;
+  font-size: 11px;
+}
+.review-meta > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.review-meta > div > span:not(.badge) {
+  color: var(--muted);
+}
+.editor-grid {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.criteria-panel {
+  position: sticky;
+  top: 15px;
+}
+.criteria-panel h3 {
+  margin: 7px 0 22px;
+  font-size: 24px;
+}
+.criterion-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: white;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  padding: 13px;
+  margin: 9px 0;
+  border-radius: 3px;
+  font-size: 11px;
+}
+.criterion-button.selected {
+  border-left-color: var(--yellow);
+  background: #fffdf2;
+}
+.criterion-button > span:last-child {
+  float: right;
+}
+.criterion-button.selected > span:last-child {
+  float: none;
+}
+.criterion-top {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  float: none !important;
+}
+.criterion-top b {
+  font-family: monospace;
+  background: #f0f0e6;
+  padding: 3px 5px;
+}
+.criterion-top > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+}
+.criterion-button p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+.scenario-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+.scenario-filters input {
+  font-size: 11px;
+}
+.scenario-filters > select {
+  font-size: 10px;
+  max-width: 135px;
+  padding: 0 7px;
+}
+.scenario-card {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: white;
+  margin-bottom: 12px;
+}
+.scenario-card > summary {
+  list-style: none;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 17px 18px;
+  cursor: pointer;
+}
+.scenario-card > summary::-webkit-details-marker {
+  display: none;
+}
+.scenario-card > summary:after {
+  content: "+";
+  margin-left: auto;
+  font-size: 18px;
+  color: var(--muted);
+}
+.scenario-card[open] > summary:after {
+  content: "−";
+}
+.scenario-card[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+.scenario-number {
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 600;
+  background: #f1f1e9;
+  padding: 4px 5px;
+  white-space: nowrap;
+}
+.scenario-name {
+  font-size: 12px;
+  font-weight: 500;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.scenario-card .badge {
+  font-size: 9px;
+}
+.scenario-body {
+  padding: 22px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}
+.form-grid label {
+  font-size: 11px;
+}
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+  font-size: 12px;
+}
+.span-two {
+  grid-column: 1/-1;
+}
+.scenario-body > .danger {
+  margin-top: 18px;
+  font-size: 11px;
+}
+.add-scenario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px;
+  border: 1px dashed #b9b9aa;
+  background: transparent;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.add-scenario:hover {
+  background: #fff9dc;
+}
+.editor-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  background: white;
+  box-shadow: 0 -3px 15px #00000008;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--yellow);
+  padding: 15px 18px;
+  margin-top: 25px;
+}
+.editor-actions > div {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font-size: 10px;
+}
+.editor-actions .button {
+  font-size: 10px;
+  padding: 9px 12px;
+  min-height: 39px;
+}
+.validation-notes {
+  margin: 15px 0;
+  font-size: 11px;
+  color: var(--muted);
+}
