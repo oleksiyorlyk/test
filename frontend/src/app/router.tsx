@@ -7,6 +7,7 @@ import { History } from "../features/jobs/HistoryPage";
 import { Connection } from "../features/connection/ConnectionPage";
 import { JobDetail } from "../features/jobs/JobDetail";
 import { StoryDetail } from "../features/stories/StoryDetail";
+import { PromptComparison } from "../features/promptComparison/PromptComparison";
 
 export const client = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "stories", element: <Stories /> },
       { path: "stories/:id", element: <StoryDetail /> },
       { path: "history", element: <History /> },
+      { path: "prompt-comparison", element: <PromptComparison /> },
       { path: "jobs/:id", element: <JobDetail /> },
       { path: "connection", element: <Connection /> },
       {

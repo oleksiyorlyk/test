@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   FolderOpen,
   History as HistoryIcon,
+  GitCompareArrows,
   LayoutDashboard,
   Menu,
   Settings2,
@@ -31,6 +32,7 @@ export function Layout() {
     { to: "/", label: "Prehľad", icon: LayoutDashboard },
     { to: "/stories", label: "User Stories", icon: FolderOpen },
     { to: "/history", label: "História behov", icon: HistoryIcon },
+    { to: "/prompt-comparison", label: "Porovnanie promptov", icon: GitCompareArrows },
     { to: "/connection", label: "Pripojenie", icon: Settings2 },
   ];
   return (
