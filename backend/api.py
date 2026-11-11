@@ -2,9 +2,9 @@
 
 import os
 import threading
-from urllib.parse import urlsplit
 from contextlib import asynccontextmanager
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -17,16 +17,17 @@ from backend.routes import health, jobs, reviews, stories
 from backend.services.jobs import Jobs
 from backend.storage.store import Store
 
-
 LOCAL_HOSTS = frozenset({"127.0.0.1", "localhost", "testserver"})
-LOCAL_ORIGINS = frozenset({
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:8001",
-    "http://127.0.0.1:8001",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-})
+LOCAL_ORIGINS = frozenset(
+    {
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:8001",
+        "http://127.0.0.1:8001",
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+    }
+)
 
 
 def public_origin_from_env() -> str | None:

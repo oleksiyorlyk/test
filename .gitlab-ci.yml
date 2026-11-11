@@ -10,6 +10,7 @@ workflow:
 stages:
   - check
   - smoke
+  - deploy
 
 default:
   tags:
@@ -103,3 +104,38 @@ docker:
     expire_in: 7 days
     paths:
       - .ci-artifacts/
+
+deploy_production:
+  stage: deploy
+  image: alpine:3.21
+  tags:
+    - docker
+
+  interruptible: false
+  resource_group: production
+
+  environment:
+    name: production
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"'
+      when: on_success
+    - when: never
+
+  before_script:
+    - apk add --no-cache openssh-client bash
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/known_hosts
+    - chmod 400 "$SSH_PRIVATE_KEY"
+
+  script:
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o BatchMode=yes \
+        -o StrictHostKeyChecking=yes \
+        "$DEPLOY_USER@$DEPLOY_HOST" \
+        "bash -s -- '$CI_COMMIT_SHA' '$DEPLOY_PATH'" \
+        < scripts/ci/deploy-remote.sh
