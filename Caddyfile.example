@@ -1,0 +1,7 @@
+YOUR_SUBDOMAIN.duckdns.org {
+    basic_auth {
+        team PASTE_YOUR_CADDY_PASSWORD_HASH_HERE
+    }
+
+    reverse_proxy frontend:80
+}

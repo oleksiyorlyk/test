@@ -29,6 +29,7 @@ services:
       timeout: 5s
       start_period: 20s
       retries: 6
+
   frontend:
     build:
       context: .
@@ -43,3 +44,22 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+
+  caddy:
+    image: caddy:2
+    profiles: ["public"]
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      frontend:
+        condition: service_healthy
+
+volumes:
+  caddy_data:
+  caddy_config:

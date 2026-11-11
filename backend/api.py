@@ -1,6 +1,8 @@
 """FastAPI composition root. Import and OpenAPI export have no storage effects."""
 
+import os
 import threading
+from urllib.parse import urlsplit
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -14,6 +16,36 @@ from backend.core.errors import ControlError, translate
 from backend.routes import health, jobs, reviews, stories
 from backend.services.jobs import Jobs
 from backend.storage.store import Store
+
+
+LOCAL_HOSTS = frozenset({"127.0.0.1", "localhost", "testserver"})
+LOCAL_ORIGINS = frozenset({
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:8001",
+    "http://127.0.0.1:8001",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+})
+
+
+def public_origin_from_env() -> str | None:
+    """Read the exact public HTTPS origin for the deployed application."""
+    value = os.environ.get("PUBLIC_ORIGIN", "").strip().rstrip("/")
+    if not value:
+        return None
+    parsed = urlsplit(value)
+    if (
+        parsed.scheme != "https"
+        or not parsed.hostname
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.path
+        or parsed.query
+        or parsed.fragment
+    ):
+        raise ValueError("PUBLIC_ORIGIN must be an HTTPS origin such as https://app.example.com")
+    return value
 
 
 def create_app(data_dir: Path = CONTROL_DATA):
@@ -37,28 +69,33 @@ def create_app(data_dir: Path = CONTROL_DATA):
         yield
 
     app = FastAPI(title="AI Test Automation Control", lifespan=lifespan)
+    public_origin = public_origin_from_env()
+    allowed_hosts = set(LOCAL_HOSTS)
+    allowed_origins = set(LOCAL_ORIGINS)
+    if public_origin:
+        allowed_hosts.add(urlsplit(public_origin).hostname)
+        allowed_origins.add(public_origin)
 
     @app.middleware("http")
-    async def local_requests(request: Request, call_next):
-        host = request.headers.get("host", "").split(":")[0]
-        origin = request.headers.get("origin")
-        if host not in ("127.0.0.1", "localhost", "testserver"):
+    async def allowed_requests(request: Request, call_next):
+        # Validate the actual HTTP Host header, not X-Forwarded-Host.
+        host_header = request.headers.get("host", "")
+        try:
+            host = urlsplit("//" + host_header).hostname
+        except ValueError:
+            host = None
+        if host not in allowed_hosts:
             return JSONResponse(
-                {"error": {"code": "LOCAL_ONLY", "message": "Rozhranie je dostupné iba lokálne."}},
+                {"error": {"code": "HOST", "message": "Nepovolený názov hostiteľa."}},
                 status_code=403,
             )
+
+        # Check browser Origin on state-changing requests. This is not authentication.
+        origin = request.headers.get("origin")
         if (
             request.method not in ("GET", "HEAD", "OPTIONS")
             and origin
-            and origin
-            not in (
-                "http://localhost:5173",
-                "http://127.0.0.1:5173",
-                "http://localhost:8001",
-                "http://127.0.0.1:8001",
-                "http://localhost:8080",
-                "http://127.0.0.1:8080",
-            )
+            and origin not in allowed_origins
         ):
             return JSONResponse(
                 {"error": {"code": "ORIGIN", "message": "Nepovolený pôvod požiadavky."}},
