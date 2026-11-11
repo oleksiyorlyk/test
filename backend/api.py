@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.core.config import CONTROL_DATA, LEGACY_CONTROL_DATA, MIGRATION_LOCK, ROOT, STORY_DATA
 from backend.core.errors import ControlError, translate
-from backend.routes import health, jobs, prompt_comparison, reviews, stories
+from backend.routes import health, jobs, reviews, stories, prompt_comparison
 from backend.services.jobs import Jobs
 from backend.storage.store import Store
 
@@ -131,13 +131,7 @@ def create_app(data_dir: Path = CONTROL_DATA):
             status_code=error.status,
         )
 
-    for router in (
-        health.router,
-        stories.router,
-        reviews.router,
-        jobs.router,
-        prompt_comparison.router,
-    ):
+    for router in (health.router, stories.router, reviews.router, jobs.router, prompt_comparison.router):
         app.include_router(router)
 
     dist = ROOT / "frontend" / "dist"

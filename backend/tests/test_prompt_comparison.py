@@ -1,12 +1,10 @@
 """Offline API smoke tests; never call Azure or an LLM."""
-
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
-
 from backend.api import create_app
 from backend.routes import prompt_comparison
 

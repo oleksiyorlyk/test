@@ -22,9 +22,7 @@ from backend.integrations.prompts import SYSTEM_PROMPT, build_user_prompt
 from backend.models.scenarios import ScenarioBatch, validate_scenarios
 from backend.services.normalizer import normalize_story
 
-DETAILED_PROMPT = (
-    SYSTEM_PROMPT
-    + """
+DETAILED_PROMPT = SYSTEM_PROMPT + """
 
 Additional QA planning strategy:
 - First reason about EACH explicitly supplied acceptance criterion.
@@ -35,7 +33,6 @@ Additional QA planning strategy:
 - If requirements do not provide necessary information, use BLOCKED with reason.
 - Keep scenarios precise, testable, and traceable to exact evidence quotes.
 """
-)
 
 
 def main():
@@ -75,11 +72,7 @@ def main():
         raise ValueError("Set OPENAI_API_KEY in backend/.env")
 
     client = OpenAI(api_key=os.environ["OPENAI_API_KEY"], timeout=90.0)
-    output_dir = (
-        args.output_dir
-        if args.output_dir
-        else STORY_DATA / "experiments" / f"story_{args.story_id}"
-    )
+    output_dir = args.output_dir if args.output_dir else STORY_DATA / "experiments" / f"story_{args.story_id}"
     output_dir.mkdir(parents=True, exist_ok=True)
     results = {}
     for name, instructions in (("A", SYSTEM_PROMPT), ("B", DETAILED_PROMPT)):
@@ -142,7 +135,8 @@ def main():
         ("Čas (s)", "elapsed_seconds"),
     ]
     table = header + "".join(
-        f"| {label} | {results['A'][key]} | {results['B'][key]} |\n" for label, key in rows
+        f"| {label} | {results['A'][key]} | {results['B'][key]} |\n"
+        for label, key in rows
     )
     markdown = (
         f"# Porovnanie promptovacích stratégií — User Story #{args.story_id}\n\n"

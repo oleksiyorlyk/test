@@ -3,7 +3,6 @@
 Runs the existing experiment in a background task, then snapshots its output.
 No writes to Azure DevOps or existing job data.
 """
-
 import json
 import os
 import subprocess
@@ -54,36 +53,16 @@ def _execute(run_id: str, story_id: int):
     status["status"] = "RUNNING"
     _save_json(status_file, status)
     try:
-        command = [
-            sys.executable,
-            "-m",
-            "backend.experiments.compare_prompts",
-            str(story_id),
-            "--output-dir",
-            str(folder),
-        ]
+        command = [sys.executable, "-m", "backend.experiments.compare_prompts", str(story_id), "--output-dir", str(folder)]
         completed = subprocess.run(
-            command,
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            timeout=300,
-            check=False,
+            command, cwd=ROOT, capture_output=True, text=True, timeout=300, check=False,
         )
         if completed.returncode:
             raise RuntimeError("Experiment failed. Check backend configuration and logs.")
         report = _load_json(folder / "comparison.json")
-        status.update(
-            {"status": "SUCCEEDED", "finished_at": now(), "results": report.get("results", {})}
-        )
+        status.update({"status": "SUCCEEDED", "finished_at": now(), "results": report.get("results", {})})
     except Exception:
-        status.update(
-            {
-                "status": "FAILED",
-                "finished_at": now(),
-                "message": "Porovnanie zlyhalo. Skontrolujte nastavenia Azure a LLM alebo serverový denník.",
-            }
-        )
+        status.update({"status": "FAILED", "finished_at": now(), "message": "Porovnanie zlyhalo. Skontrolujte nastavenia Azure a LLM alebo serverový denník."})
     finally:
         _save_json(status_file, status)
         BUSY.release()
@@ -131,9 +110,7 @@ def get_run(run_id: str):
 @router.post("", status_code=202)
 def start_run(body: RunRequest, tasks: BackgroundTasks):
     if os.getenv("PUBLIC_ORIGIN"):
-        raise HTTPException(
-            status_code=403, detail="Spustenie porovnania je povolené iba v lokálnom režime."
-        )
+        raise HTTPException(status_code=403, detail="Spustenie porovnania je povolené iba v lokálnom režime.")
     if not BUSY.acquire(blocking=False):
         raise HTTPException(status_code=409, detail="Iné porovnanie práve prebieha")
     try:
@@ -157,8 +134,4 @@ def download_report(run_id: str):
     report = folder / "comparison.md"
     if status.get("status") != "SUCCEEDED" or not report.is_file():
         raise HTTPException(status_code=404, detail="Report nie je dostupný")
-    return FileResponse(
-        report,
-        filename=f"prompt-comparison-story-{status['story_id']}.md",
-        media_type="text/markdown",
-    )
+    return FileResponse(report, filename=f"prompt-comparison-story-{status['story_id']}.md", media_type="text/markdown")

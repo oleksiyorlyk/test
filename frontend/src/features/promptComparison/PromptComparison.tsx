@@ -81,11 +81,13 @@ export function PromptComparison() {
       void queryClient.invalidateQueries({ queryKey: ["prompt-comparisons"] });
     },
   });
-  useEffect(() => {
-    if (detail.data && !inProgress(detail.data.status)) {
-      void queryClient.invalidateQueries({ queryKey: ["prompt-comparisons"] });
-    }
-  }, [detail.data?.status, queryClient]);
+  const detailStatus = detail.data?.status;
+
+useEffect(() => {
+  if (detailStatus && !inProgress(detailStatus)) {
+    void queryClient.invalidateQueries({ queryKey: ["prompt-comparisons"] });
+  }
+}, [detailStatus, queryClient]);
   const run = detail.data;
   const items = list.data?.items ?? [];
   return (
